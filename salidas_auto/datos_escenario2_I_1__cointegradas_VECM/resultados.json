@@ -1,0 +1,99 @@
+{
+ "archivo": "datos_escenario2_I(1)_cointegradas.xlsx",
+ "hoja": "Sheet1",
+ "variables": [
+  "y",
+  "x"
+ ],
+ "orden_cholesky": [
+  "y",
+  "x"
+ ],
+ "estructura": "VECM con r = 1",
+ "p": 2,
+ "rango": 1,
+ "johansen_det": 0,
+ "logs": {
+  "x": false,
+  "y": false
+ },
+ "max_eig_modelo": 1.0000000000000009,
+ "diagnosticos": {
+  "white": {
+   "stat": 23.58439570800979,
+   "p": 0.9096007518306137,
+   "df": 34,
+   "nlags": 10
+  },
+  "arch": {
+   "LM": {
+    "y": 9.106255659305198,
+    "x": 13.104655431583929
+   },
+   "p_LM": {
+    "y": 0.6938289871502725,
+    "x": 0.3614800125299975
+   },
+   "F": {
+    "y": 0.7537327488769398,
+    "x": 1.0922541137588289
+   },
+   "p_F": {
+    "y": 0.6984657064444444,
+    "x": 0.36382697911219947
+   }
+  },
+  "norm": {
+   "stat": 4.040675301345102,
+   "p": 0.400529034016935,
+   "df": 4
+  },
+  "norm_uni": {
+   "JB": {
+    "y": 3.500769863116112,
+    "x": 0.03795667041779027
+   },
+   "p_value": {
+    "y": 0.17370706524823432,
+    "x": 0.9812006195189918
+   }
+  }
+ },
+ "config": {
+  "hoja": null,
+  "columnas": null,
+  "orden": null,
+  "frecuencia": null,
+  "inicio": null,
+  "alpha": 0.05,
+  "criterio_p": "aic",
+  "p": null,
+  "maxlags": null,
+  "rango": null,
+  "johansen_det": 0,
+  "usar_log": null,
+  "auto_orden": true,
+  "max_vars": 5,
+  "max_nan": 0.2,
+  "interp_max": 3,
+  "cercano_a_1": 0.95,
+  "adf_maxlag": 3,
+  "lags_portm": 10,
+  "lags_arch": 12,
+  "pasos_pron": 12,
+  "pasos_irf": 18,
+  "boot_runs": 100,
+  "semilla": 202601,
+  "nivel_ic": 0.95,
+  "generar_pdf": false,
+  "carpeta_salida": "salidas_auto",
+  "filas_tabla": 2000,
+  "perfil": "curso",
+  "adf_regresion": "n",
+  "vecm_det": "ci",
+  "johansen_siempre": true,
+  "poster": false,
+  "modelo": "VECM",
+  "p_dif": null
+ }
+}

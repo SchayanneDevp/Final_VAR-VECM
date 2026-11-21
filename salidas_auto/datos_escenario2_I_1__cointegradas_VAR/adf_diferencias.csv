@@ -1,0 +1,3 @@
+variable,espec,t,p_value,rezagos,crit_5,adf,kpss_p,lectura
+y,n,-18.856706721613257,3.514386419777047e-29,1,-1.9414592109070408,rechaza raiz unitaria,0.1,estacionaria I(0)
+x,n,-15.766740137918818,1.6568698614454472e-27,2,-1.9414599967693351,rechaza raiz unitaria,0.1,estacionaria I(0)

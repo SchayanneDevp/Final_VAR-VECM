@@ -1,0 +1,99 @@
+{
+ "archivo": "datos_escenario2_I(1)_cointegradas.xlsx",
+ "hoja": "Sheet1",
+ "variables": [
+  "y",
+  "x"
+ ],
+ "orden_cholesky": [
+  "y",
+  "x"
+ ],
+ "estructura": "VAR en primeras diferencias (modo VAR)",
+ "p": 1,
+ "rango": 0,
+ "johansen_det": 0,
+ "logs": {
+  "x": false,
+  "y": false
+ },
+ "max_eig_modelo": 0.1275391868059681,
+ "diagnosticos": {
+  "white": {
+   "stat": 81.48391696444864,
+   "p": 2.2321673718121224e-05,
+   "df": 36,
+   "nlags": 10
+  },
+  "arch": {
+   "LM": {
+    "y": 8.046758830893447,
+    "x": 9.467947773279695
+   },
+   "p_LM": {
+    "y": 0.781465742135348,
+    "x": 0.6625266634412639
+   },
+   "F": {
+    "y": 0.6648162979377383,
+    "x": 0.7841619636375731
+   },
+   "p_F": {
+    "y": 0.7857799326179551,
+    "x": 0.6671620749953271
+   }
+  },
+  "norm": {
+   "stat": 2.9303431984825217,
+   "p": 0.56954915921001,
+   "df": 4
+  },
+  "norm_uni": {
+   "JB": {
+    "y": 1.923457549164489,
+    "x": 1.2339440423390542
+   },
+   "p_value": {
+    "y": 0.38223152232516583,
+    "x": 0.539575790568374
+   }
+  }
+ },
+ "config": {
+  "hoja": null,
+  "columnas": null,
+  "orden": null,
+  "frecuencia": null,
+  "inicio": null,
+  "alpha": 0.05,
+  "criterio_p": "aic",
+  "p": null,
+  "maxlags": null,
+  "rango": null,
+  "johansen_det": 0,
+  "usar_log": null,
+  "auto_orden": true,
+  "max_vars": 5,
+  "max_nan": 0.2,
+  "interp_max": 3,
+  "cercano_a_1": 0.95,
+  "adf_maxlag": 3,
+  "lags_portm": 10,
+  "lags_arch": 12,
+  "pasos_pron": 12,
+  "pasos_irf": 18,
+  "boot_runs": 100,
+  "semilla": 202601,
+  "nivel_ic": 0.95,
+  "generar_pdf": false,
+  "carpeta_salida": "salidas_auto",
+  "filas_tabla": 2000,
+  "perfil": "curso",
+  "adf_regresion": "n",
+  "vecm_det": "ci",
+  "johansen_siempre": true,
+  "poster": false,
+  "modelo": "VAR",
+  "p_dif": null
+ }
+}

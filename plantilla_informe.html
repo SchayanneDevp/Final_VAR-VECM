@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Taller VECM · Informe</title>
+<style>
+:root{--bg:#f4f3ee;--card:#fff;--ink:#1b1f24;--ink2:#46505c;--mut:#78828e;--line:#e2e0d8;--grid:#ecebe4;--head:#1b2a41;--headink:#fff;
+  --c1:#2a78d6;--c2:#eb6834;--c3:#1baf7a;--c4:#b7791f;--c5:#6b7280;--ok:#146c36;--okbg:#e4f4ea;--al:#92400e;--albg:#fdf0d9}
+@media (prefers-color-scheme:dark){:root:not([data-tema="light"]){--bg:#0f1318;--card:#171c23;--ink:#e8ebef;--ink2:#b5bdc8;--mut:#8590a0;--line:#29303a;--grid:#232932;--head:#0b1220;--headink:#e8ebef;--c1:#3987e5;--c2:#eb6834;--c3:#1baf7a;--c4:#d6a030;--c5:#9aa4b2;--ok:#6ee79b;--okbg:#12301f;--al:#fcd34d;--albg:#3a2a0b}}
+:root[data-tema="dark"]{--bg:#0f1318;--card:#171c23;--ink:#e8ebef;--ink2:#b5bdc8;--mut:#8590a0;--line:#29303a;--grid:#232932;--head:#0b1220;--headink:#e8ebef;--c1:#3987e5;--c2:#eb6834;--c3:#1baf7a;--c4:#d6a030;--c5:#9aa4b2;--ok:#6ee79b;--okbg:#12301f;--al:#fcd34d;--albg:#3a2a0b}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.wrap{max-width:1800px;margin:0 auto;padding:22px 28px 40px}
+header.top{display:flex;gap:24px;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;border-bottom:2px solid var(--ink);padding-bottom:14px;margin-bottom:18px}
+header.top h1{margin:0;font:700 30px/1.1 Georgia,"Times New Roman",serif;letter-spacing:-.01em}
+header.top p{margin:6px 0 0;color:var(--ink2);font-size:13px}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap}
+.toolbar button{font:600 13px system-ui;padding:8px 14px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+.toolbar button.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.toolbar button.pdf{background:var(--c1);border-color:var(--c1);color:#fff}
+.resumen,.fila{display:grid;grid-template-columns:repeat(var(--n,3),minmax(0,1fr));gap:16px}
+.resumen{margin-bottom:18px}
+.card,.celda{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;break-inside:avoid}
+.card h2{margin:0 0 4px;font:700 17px Georgia,serif}
+.card .modelo{font-size:22px;font-weight:700;margin:6px 0 2px}
+.card .kv{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.paso{grid-column:1/-1;display:flex;align-items:baseline;gap:12px;background:var(--head);color:var(--headink);border-radius:8px;padding:7px 14px;margin-top:10px;break-after:avoid}
+.paso b{font:700 13px ui-monospace,Menlo,monospace;opacity:.7}.paso span{font-weight:700;font-size:15px}.paso i{font-size:12px;opacity:.75;font-style:normal;margin-left:auto}
+.fila{margin:12px 0 0}
+.chip{display:inline-block;font:700 11px ui-monospace,Menlo,monospace;padding:2px 7px;border-radius:5px;background:var(--grid);color:var(--ink2);margin-bottom:6px}
+.txt{font-size:12.5px;color:var(--ink2);margin:8px 0 0;line-height:1.5}.txt b{color:var(--ink)}
+.b{display:inline-block;font-size:11px;font-weight:700;padding:1px 7px;border-radius:99px;white-space:nowrap}
+.b.ok{background:var(--okbg);color:var(--ok)}.b.al{background:var(--albg);color:var(--al)}
+table{border-collapse:collapse;width:100%;font-size:12px;font-variant-numeric:tabular-nums}
+th{font-weight:600;color:var(--mut);text-align:right;border-bottom:1px solid var(--line);padding:3px 6px;font-size:11px}
+td{text-align:right;padding:3px 6px;border-bottom:1px solid var(--grid)}
+th:first-child,td:first-child{text-align:left}
+td.min{font-weight:700;text-decoration:underline}
+.mono{font-family:ui-monospace,Menlo,monospace}
+.leg{display:flex;gap:14px;font-size:11.5px;color:var(--ink2);margin-bottom:2px}.leg i{display:inline-block;width:14px;height:3px;border-radius:2px;margin-right:5px;vertical-align:middle}
+.ch{position:relative}.ch svg{width:100%;height:auto;display:block;overflow:visible}
+.ch text{fill:var(--mut);font:10px system-ui}.ch .tt{fill:var(--ink2);font:600 10.5px system-ui}
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--bg);font:11px/1.35 system-ui;padding:5px 8px;border-radius:6px;white-space:nowrap;display:none;z-index:5}
+.irf{display:grid;grid-template-columns:repeat(var(--k,2),1fr);gap:6px 10px}
+.errores{font-size:11px;color:var(--al);margin-top:6px}
+footer{margin-top:22px;color:var(--mut);font-size:11.5px;border-top:1px solid var(--line);padding-top:10px}
+.informe .esc{max-width:900px;margin:0 auto 30px;break-before:page}.informe .esc:first-of-type{break-before:auto}
+.informe .esc>h2{font:700 24px Georgia,serif;border-bottom:2px solid var(--ink);padding-bottom:6px}
+.informe .celda{margin:10px 0}
+.informe .paso{margin-top:14px}
+@media (max-width:1100px){.resumen,.fila{grid-template-columns:1fr}}
+.imp .toolbar{display:none}.imp .wrap{width:1800px;max-width:none}
+@media print{.toolbar{display:none}body{background:var(--bg)}}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<div class="tip" id="tip"></div>
+<script>
+const D = /*__DATOS__*/null;
+const E = D.orden;
+const CV = (R,v) => `var(--c${Math.min(R.vars.indexOf(v),4)+1})`;
+const $ = s => document.querySelector(s);
+const f = (v,d=3) => { if(v==null||isNaN(v)) return "n/d"; let s=v.toFixed(d); if(/^-0\.?0*$/.test(s)) s=s.slice(1); return s.replace("-","−"); };
+const pv = p => p<0.001 ? "&lt;0.001" : f(p,3);
+const badge = (c,a="cumple",b="revisar") => `<span class="b ${c?"ok":"al"}">${c?"✓":"!"} ${c?a:b}</span>`;
+
+/* ---------- gráficos SVG (vectoriales: se imprimen nítidos) ---------- */
+const CH = {}; let chN = 0;
+function nice(lo,hi,n=4){ if(lo===hi){lo-=1;hi+=1} const r=(hi-lo)/n, p=Math.pow(10,Math.floor(Math.log10(r))), m=r/p, s=(m<1.5?1:m<3?2:m<7?5:10)*p;
+  const a=Math.floor(lo/s)*s, b=Math.ceil(hi/s)*s, t=[]; for(let v=a; v<=b+s/2; v+=s) t.push(Math.abs(v)<s*1e-6?0:+v.toPrecision(10)); return t; }
+function line(o){
+  const W=o.w||560, H=o.h||150, ml=40, mr=o.labels?26:8, mt=8, mb=20, n=o.xs.length, id="c"+(chN++);
+  let all=[]; o.series.forEach(s=>{all.push(...s.v)}); (o.bands||[]).forEach(b=>{all.push(...b.lo,...b.hi)});
+  const tk=nice(Math.min(...all,o.zero?0:Infinity),Math.max(...all,o.zero?0:-Infinity)), y0=tk[0], y1=tk[tk.length-1];
+  const X=i=>ml+(W-ml-mr)*i/(n-1), Y=v=>mt+(H-mt-mb)*(1-(v-y0)/(y1-y0));
+  const path=(v,off=0)=>{let d="";for(let j=0;j<v.length;j++)d+=(j?"L":"M")+X(j+off).toFixed(1)+" "+Y(v[j]).toFixed(1);return d};
+  let g=tk.map(t=>`<line x1="${ml}" x2="${W-mr}" y1="${Y(t)}" y2="${Y(t)}" stroke="var(--grid)"/><text x="${ml-5}" y="${Y(t)+3}" text-anchor="end">${+t.toPrecision(3)}</text>`).join("");
+  if(o.zero&&y0<0&&y1>0) g+=`<line x1="${ml}" x2="${W-mr}" y1="${Y(0)}" y2="${Y(0)}" stroke="var(--mut)" stroke-dasharray="3 3"/>`;
+  const step=Math.max(1,Math.round((n-1)/(o.nx||5)));
+  for(let i=0;i<n;i+=step) g+=`<text x="${X(i)}" y="${H-5}" text-anchor="middle">${o.xs[i]}</text>`;
+  (o.bands||[]).forEach(b=>{ let d=""; for(let i=0;i<b.lo.length;i++){d+=(i?"L":"M")+X(b.from+i)+" "+Y(b.hi[i])} for(let i=b.lo.length-1;i>=0;i--){d+="L"+X(b.from+i)+" "+Y(b.lo[i])}
+    g+=`<path d="${d}Z" fill="${b.c}" opacity=".18"/>`});
+  o.series.forEach(s=>{ g+=`<path d="${path(s.v,s.from||0)}" fill="none" stroke="${s.c}" stroke-width="1.6" stroke-linejoin="round" ${s.dash?'stroke-dasharray="5 3"':""}/>`;
+    if(o.labels) g+=`<text class="tt" x="${X(s.v.length-1+(s.from||0))+4}" y="${Y(s.v[s.v.length-1])+3}">${s.n}</text>`});
+  if(o.vline!=null) g+=`<line x1="${X(o.vline)}" x2="${X(o.vline)}" y1="${mt}" y2="${H-mb}" stroke="var(--mut)" stroke-dasharray="2 3"/>`;
+  g+=`<line class="cross" x1="0" x2="0" y1="${mt}" y2="${H-mb}" stroke="var(--ink2)" style="display:none"/>`;
+  CH[id]={xs:o.xs,series:o.series,ml,mr,W,n};
+  return `<div class="ch" data-id="${id}">${o.title?`<div class="leg"><b style="color:var(--ink)">${o.title}</b></div>`:""}${o.legend?`<div class="leg">${o.series.map(s=>`<span><i style="background:${s.c}"></i>${s.n}</span>`).join("")}</div>`:""}<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${o.title||"gráfico"}">${g}</svg></div>`;
+}
+document.addEventListener("mousemove",e=>{
+  const ch=e.target.closest(".ch"), tip=$("#tip"); if(!ch||!CH[ch.dataset.id]){tip.style.display="none";return}
+  const c=CH[ch.dataset.id], svg=ch.querySelector("svg"), r=svg.getBoundingClientRect(), vx=(e.clientX-r.left)/r.width*c.W;
+  const i=Math.max(0,Math.min(c.n-1,Math.round((vx-c.ml)/(c.W-c.ml-c.mr)*(c.n-1)))), x=c.ml+(c.W-c.ml-c.mr)*i/(c.n-1), cr=svg.querySelector(".cross");
+  cr.setAttribute("x1",x);cr.setAttribute("x2",x);cr.style.display="";
+  const rows=c.series.map(s=>{const j=i-(s.from||0); return j>=0&&j<s.v.length?`${s.n}: <b>${f(s.v[j],4)}</b>`:null}).filter(Boolean);
+  tip.innerHTML=`${c.xs[i]}<br>${rows.join("<br>")}`; tip.style.display="block";
+  tip.style.left=(e.pageX+14)+"px"; tip.style.top=(e.pageY+10)+"px";
+});
+document.addEventListener("mouseout",e=>{ if(!e.relatedTarget||!e.relatedTarget.closest||!e.relatedTarget.closest(".ch")){ $("#tip").style.display="none"; document.querySelectorAll(".cross").forEach(c=>c.style.display="none")}});
+
+/* ---------- tablas ---------- */
+const tab=(h,rows)=>`<table><thead><tr>${h.map(x=>`<th>${x}</th>`).join("")}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map(c=>c&&typeof c==="object"&&"v" in c?`<td${c.min?' class="min"':""}>${c.v}</td>`:`<td>${c}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
+const mat=(M,nom)=>`<span class="mono">${nom} = [${M.map(r=>"["+r.map(v=>f(v)).join(", ")+"]").join(", ")}]</span>`;
+const NA=m=>`<p class="txt">${m}: no disponible (ver lista de errores del registro).</p>`;
+
+function diagTabla(d){
+  if(!d) return NA("Diagnóstico");
+  const pm=d.portmanteau, nm=d.normalidad;
+  const rows=[["Portmanteau (autocorr.)",f(pm.stat,2),pv(pm.p),badge(pm.p>.05)],
+    ...Object.entries(d.arch).map(([v,a])=>[`ARCH-LM ${v} (12 rez.)`,f(a.lm,2),pv(a.p),badge(a.p>.05)]),
+    ["Normalidad multivariada",f(nm.stat,2),pv(nm.p),badge(nm.p>.05)],
+    ...Object.entries(d.jb).map(([v,a])=>[`Jarque-Bera ${v}`,f(a.stat,2),pv(a.p),badge(a.p>.05)])];
+  return tab(["Prueba","Estad.","p-valor","H₀ (5 %)"],rows);
+}
+
+/* ---------- celdas por paso ---------- */
+const PASOS=[
+ [1,"Series de tiempo","x e y, frecuencia trimestral desde 1990Q1"],
+ [2,"Raíz unitaria · Dickey-Fuller aumentada","H₀: la serie tiene raíz unitaria · regression=\"n\", maxlag=3, AIC"],
+ [3,"Selección de rezagos del VAR","criterios de información, p máximo = 6"],
+ [4,"Supuestos del VAR en niveles","ruido blanco: autocorrelación, heterocedasticidad y normalidad"],
+ [5,"Test de Johansen","determinista del perfil del curso (det_order=0) · traza y valor propio máximo al 5 %"],
+ [6,"Modelo estimado","según el rango de cointegración"],
+ [7,"Supuestos del modelo final","mismos residuales que su representación VAR"],
+ [8,"Pronóstico 12 pasos","punto, ancho medio del IC 95 % y límites"],
+ [9,"IRF no ortogonalizadas","columna = impulso, fila = respuesta · bandas bootstrap 95 %"],
+ [10,"IRF ortogonalizadas","descomposición de Cholesky, orden x → y"],
+ [11,"Conclusión","lectura integrada"]];
+(function(){ // subtítulos que dependen de la base (antes estaban fijos)
+  const R0=(D.esc&&D.esc[E[0]])||{}, vs=R0.vars||[], per=R0.periodos||[];
+  if(vs.length) PASOS[0][2]=`${vs.join(", ")} · ${per.length} observaciones`+(per.length?` · ${per[0]} a ${per[per.length-1]}`:"");
+  if(vs.length) PASOS[9][2]=`descomposición de Cholesky, orden ${vs.join(" → ")}`;
+  const nr=((R0.rezagos||{}).filas||[]).length; if(nr) PASOS[2][2]=`criterios de información, p máximo = ${nr}`;
+  if(R0.johansen&&R0.johansen.det_order!=null) PASOS[4][2]=`traza y valor propio máximo al 5 % · det_order = ${R0.johansen.det_order}`;
+  if(R0.pronostico&&R0.pronostico.h) PASOS[7][1]=`Pronóstico ${R0.pronostico.h} pasos`;
+})();
+
+function cuerpo(k,R){
+  switch(k){
+  case 1: return line({xs:R.periodos,series:R.vars.map(v=>({n:v,v:R.series[v],c:CV(R,v)})),h:170,legend:true,labels:true,nx:6});
+  case 2: return R.adf? tab(["Serie","t (ADF)","p-valor","Rez.","Crít. 5 %","H₀"],R.vars.map(v=>{const a=R.adf[v];return [v,f(a.stat,3),pv(a.p),a.lags,f(a.crit["5%"],3),a.p<.05?badge(true,"rechaza","rechaza"):badge(false,"","no rechaza").replace("!","·")]})):NA("ADF");
+  case 3: if(!R.rezagos) return NA("Rezagos"); {const F=R.rezagos.filas, mn=c=>Math.min(...F.map(r=>r[c]));
+    return tab(["p","AIC","BIC","HQ","FPE"],F.map(r=>[r.p+(r.p===R.rezagos.elegido?" ◂":""),...["aic","bic","hqic","fpe"].map(c=>({v:f(r[c],c==="fpe"?4:3),min:r[c]===mn(c)}))]))}
+  case 4: return diagTabla(R.diag_var);
+  case 5: if(!R.johansen) return NA("Johansen"); {const J=R.johansen,t=J.traza,e=J.eigen;
+    return tab(["H₀","Traza","VC 95 %","Valor propio","VC 95 %","Decisión"],t.stat.map((s,i)=>[i===0?"r = 0":"r ≤ "+i,f(s,2),f(t.cv[i][1],2),f(e.stat[i],2),f(e.cv[i][1],2),s>t.cv[i][1]?"rechaza":"no rechaza"]))+
+      `<p class="txt" style="margin-top:6px">Rango elegido: <b>r = ${J.rango}</b> ${D.esperado[R.esc]!==undefined?` · esperado en el escenario: <b>${D.esperado[R.esc]}</b>`:""}</p>`}
+  case 6: if(!R.modelo) return NA("Modelo"); {const M=R.modelo,V=R.vars; let h=`<p class="txt" style="margin:0 0 6px"><b>${M.tipo}</b> · ${M.nobs} obs.</p>`;
+    if(M.beta){ const r=M.beta[V[0]].length, rows=[];
+      for(let j=0;j<r;j++) rows.push([`β${r>1?j+1:""} (cointegración)`,...V.map(v=>f(M.beta[v][j])),f(M.const_coint[j])]);
+      for(let j=0;j<r;j++) rows.push([`α${r>1?j+1:""} (ajuste)`,...V.map(v=>f(M.alpha[v][j])),""]);
+      h+=tab(["",...V,"const."],rows)+`<p class="txt" style="margin:6px 0 0">${(M.gamma||[]).map((g,i)=>mat(g,"Γ"+(i+1))).join("<br>")}${M.gamma&&M.gamma.length?"<br>":""}${M.A.slice(0,3).map((a,i)=>mat(a,"A"+(i+1))).join("<br>")}</p>`; }
+    else h+=`<p class="txt" style="margin:0">${M.A.slice(0,3).map((a,i)=>mat(a,"A"+(i+1))).join("<br>")}</p>`;
+    return h}
+  case 7: return diagTabla(R.diag_modelo);
+  case 8: if(!R.pronostico) return NA("Pronóstico"); {const P=R.pronostico,V=R.vars,h=P.hist.length,fx=j=>P.pron.map(r=>r[j]),lo=j=>P.inf.map(r=>r[j]),hi=j=>P.sup.map(r=>r[j]),hv=j=>P.hist.map(r=>r[j]),xs=[...P.hist_fecha,...P.fecha];
+    const ch=(j,n)=>line({xs,h:V.length>3?105:128,title:`${n} (${P.sobre})`,vline:h-1,nx:5,series:[{n:n,v:hv(j),c:CV(R,n)},{n:n+"̂",v:[hv(j)[h-1],...fx(j)],c:CV(R,n),dash:true,from:h-1}],bands:[{lo:[hv(j)[h-1],...lo(j)],hi:[hv(j)[h-1],...hi(j)],from:h-1,c:CV(R,n)}]});
+    const w=(i,j)=>(P.sup[i][j]-P.inf[i][j])/2;
+    const tb=V.length<=2? tab(["h · fecha",...V.flatMap(v=>[v+"̂","±","[inf ; sup]"])],P.fecha.map((d,i)=>[(i+1)+" · "+d,...V.flatMap((v,j)=>[f(P.pron[i][j]),f(w(i,j)),`${f(P.inf[i][j])} ; ${f(P.sup[i][j])}`])]))
+      : tab(["h · fecha",...V.map(v=>v+" ± ancho")],P.fecha.map((d,i)=>[(i+1)+" · "+d,...V.map((v,j)=>`${f(P.pron[i][j])} ± ${f(w(i,j))}`)]));
+    return V.map((n,j)=>ch(j,n)).join("")+tb}
+  case 9: case 10: if(!R.irf) return NA("IRF"); {const I=R.irf,src=k===9?I.no_ortog:I.ortog;
+    const V=R.vars,KK=V.length; return `<div class="irf" style="--k:${KK}">`+V.flatMap(r=>V.map(i=>{const s=src[i+">"+r];return line({xs:I.pasos,w:KK>2?220:300,h:KK>2?100:118,title:`${i} → ${r}`,zero:true,nx:3,series:[{n:i+"→"+r,v:s.irf,c:CV(R,i)}],bands:[{lo:s.lo,hi:s.hi,from:0,c:CV(R,i)}]})})).join("")+`</div>`+
+      `<p class="txt mono" style="margin-top:6px">${mat(I[k===9?"phi":"psi"][0],k===9?"Φ₀":"Ψ₀")}</p>`}
+  case 11: return "";
+  }
+}
+function celda(k,e){
+  const R=D.esc[e]; const t=(D.txt[e]||{})[k]||"";
+  return `<div class="celda"><span class="chip">${R.etiqueta||e}</span>${cuerpo(k,R)}${t?`<p class="txt">${t}</p>`:""}</div>`;
+}
+function pasoH([k,t,s]){ return `<div class="paso"><b>${String(k).padStart(2,"0")}</b><span>${t}</span><i>${s}</i></div>`; }
+
+function resumen(){
+  return `<div class="resumen" style="--n:${Math.min(E.length,4)}">`+E.map(e=>{const R=D.esc[e],M=R.modelo||{},J=R.johansen||{},d=R.diag_modelo;
+    return `<div class="card"><h2>${D.titulos[e]}</h2><div class="modelo">${M.tipo||"—"}</div>
+      <div class="kv"><span class="b ok" style="background:var(--grid);color:var(--ink2)">Johansen r = ${J.rango??"n/d"}</span>
+      ${d?badge(d.portmanteau.p>.05,"sin autocorrelación","autocorrelación"):""}
+      ${D.esperado[R.esc]===undefined?"":(J.rango===D.esperado[R.esc]?badge(true,"coincide con el taller"):badge(false,"","difiere del taller"))}</div>
+      <div class="txt">${(D.txt[e]||{})[11]||""}</div>
+      ${(R.errores&&R.errores.length)?`<div class="errores">Secciones con error: ${R.errores.length}</div>`:""}</div>`}).join("")+`</div>`;
+}
+
+let modo="poster";
+function render(){
+  let h=`<header class="top"><div><h1>${D.encabezado||"Taller aplicado · Modelos VECM"}</h1><p>${D.autor?`<b>${D.autor}</b> · `:""}Econometría II · ${new Set(E.map(e=>(e.titulo||e.esc||'').split(' - ')[0])).size} base(s) · ${E.length} modelo(s) analizados paso a paso · generado ${D.generado} · motor: ${E.map(e=>`${D.esc[e].etiqueta}: ${D.esc[e].motor}`).join(" · ")}</p></div>
+  <div class="toolbar"><button id="bp" class="${modo==="poster"?"on":""}">Póster 3 columnas</button><button id="bi" class="${modo==="informe"?"on":""}">Informe vertical</button><button id="bt">Tema</button><button class="pdf" id="bd">Descargar PDF</button></div></header>`;
+  h+=resumen();
+  if(modo==="poster") h+=`<main class="poster">`+PASOS.filter(p=>p[0]<11).map(p=>pasoH(p)+`<div class="fila" style="--n:${Math.min(E.length,4)}">${E.map(e=>celda(p[0],e)).join("")}</div>`).join("")+`</main>`;
+  else h+=`<main class="informe">`+E.map(e=>`<section class="esc"><h2>${D.titulos[e]}</h2>${PASOS.filter(p=>p[0]<11).map(p=>pasoH(p)+celda(p[0],e)).join("")}</section>`).join("")+`</main>`;
+  h+=`<footer>Los números salen de ${E.map(e=>D.esc[e].motor).filter((v,i,a)=>a.indexOf(v)===i).join(" y ")}. Interpretaciones automáticas ligadas a las cifras (nivel de significancia 5 %); revíselas siempre contra la salida del script. Cálculos completos en <span class="mono">resultados/escenario*.json</span> y <span class="mono">resultados/calculos_taller.xlsx</span>.</footer>`;
+  $("#app").innerHTML=h; $("#app").className="wrap "+modo;
+  $("#bp").onclick=()=>{modo="poster";render()}; $("#bi").onclick=()=>{modo="informe";render()};
+  $("#bt").onclick=()=>{const r=document.documentElement,d=getComputedStyle(r).getPropertyValue("--bg").trim()==="#0f1318";r.dataset.tema=d?"light":"dark"};
+  $("#bd").onclick=()=>{window.prepararImpresion(modo);setTimeout(()=>window.print(),80)};
+}
+/* ---------- PDF: la página se ajusta al contenido (póster) o A4 (informe) ---------- */
+window.prepararImpresion=function(m){
+  document.body.classList.add("imp"); if(m&&m!==modo){modo=m;render()}
+  let st=document.getElementById("pg"); if(!st){st=document.createElement("style");st.id="pg";document.head.appendChild(st)}
+  document.documentElement.dataset.temaPrev=document.documentElement.dataset.tema||""; document.documentElement.dataset.tema="light";
+  if(modo==="poster"){ document.body.classList.add("imp"); const H=document.documentElement.scrollHeight+2; st.textContent=`@page{size:1800px ${H}px;margin:0}`; }
+  else { document.body.classList.remove("imp"); st.textContent=`@page{size:A4;margin:12mm}`; }
+};
+window.addEventListener("afterprint",()=>{document.body.classList.remove("imp");document.documentElement.dataset.tema=document.documentElement.dataset.temaPrev||"";if(!document.documentElement.dataset.tema)delete document.documentElement.dataset.tema});
+render();
+</script>
+</body>
+</html>

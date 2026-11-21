@@ -1,0 +1,10 @@
+# Entornos virtuales y Python
+.venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Configuraciones de editores
+.vscode/
+.idea/
+.Rproj.user/

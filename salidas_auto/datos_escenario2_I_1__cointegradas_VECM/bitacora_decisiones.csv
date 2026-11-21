@@ -1,0 +1,17 @@
+paso,decision,motivo
+Tiempo,"frecuencia=ninguna, 0 .. 599",SIN columna de tiempo: se usa indice 0..T-1 (declare inicio/frecuencia en AJUSTES para fechas)
+Variables,"x, y",columnas numericas utiles (ver perfil)
+Transformacion,sin log,no hay series positivas con volatilidad proporcional al nivel
+Orden Cholesky,y > x,exogeneidad por Granger en VAR(4) sobre diferencias (1o la variable que menos es causada y mas causa a las demas); heuristica: verifique con la teoria economica
+p (niveles),VAR(2),minimo AIC entre los p sin autocorrelacion residual (ninguno es estable: serie no estacionaria)
+Estabilidad (niveles),max|autovalor| = 0.9977,estable pero muy persistente (cerca de raiz unitaria)
+Niveles descartados,"max|autovalor| = 0.998 >= 0.95 (practicamente raiz unitaria); ADF no rechaza raiz unitaria en x, y",regla del curso: raiz unitaria => diferenciar y probar cointegracion
+Diferencias,VAR(1) tendencia='n',"p - 1 del VAR en niveles (perfil del curso: VECM(p-1) con r = 0); ADF diferencias: y: estacionaria I(0), x: estacionaria I(0)"
+Johansen,"det_order=0, k_ar_diff=1","perfil del curso (det_order=0, como el taller)"
+Robustez Johansen,AVISO: el rango CAMBIA segun determinista/rezagos,"ver tabla en la seccion 2; si cambia, justifique la especificacion o fije AJUSTES['rango'], ['johansen_det'], ['p']"
+Rango,r = 1 (traza),secuencial al 5%; lmax sugiere r = 1
+Estructura,VECM con r = 1,resultado de Johansen
+Modelo final,"VECM(k_ar_diff=1, r=1, det='ci')",perfil curso: det_order=0 con deterministic='ci' (constante en la relacion de cointegracion); cambie con AJUSTES['vecm_det']
+Diagnosticos,Portmanteau p = 0.9096; JB p = 0.4005; ARCH min p = 0.3615,sin autocorrelacion residual (portmanteau al 5%); detalle en la seccion de supuestos
+Bandas IRF,"bootstrap de residuales, 100 replicas, 95%",percentiles
+Pronostico,12 pasos,ver seccion 6
